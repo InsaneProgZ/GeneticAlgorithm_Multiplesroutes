@@ -32,6 +32,8 @@ public:
 	string metodoAlgoritmo, numeraGF, numeraVG, geracoes, cruzGF, cruzVG, mutaGF, mutaVG;
 	string arquivoGF = "fitGeral";//modelo nome: || contém  FitXGeracoes  GeracoesXFit100- .txt
 	string arquivoVG = "fitVans";
+	string arquivoCaminho = "fCaminho";
+	string arquivoDP = "dp";
 	string tipoArquivo = ".txt";
 	//Fim das variaveis geracao de graficos
 
@@ -40,10 +42,14 @@ public:
 	{
 		//fileType =numArquivo;
 		armDadosTxt(numArquivo);
-		criaMadj(numArquivo);
+		//criaMadj(numArquivo);
 		numEscola = qtdEscola();
 		numVans = qtdVan();
 		numAlunos = qtdAluno();
+	}
+
+	MadJ()
+	{
 	}
 
 	vector<vector<double>>retornaMatrizAdj() {
@@ -51,28 +57,12 @@ public:
 	}
 
 	void armDadosTxt(int selecionaArquivo) {	//Armazena os dados do txt na matriz(mat) vector de vector
+		string names[18] = { "pontosA-5Vans-5Escolas.txt","pontosA-7Vans-5Escolas.txt","pontosA-10Vans-5Escolas.txt","pontosA-5Vans-7Escolas.txt","pontosA-7Vans-7Escolas.txt","pontosA-10Vans-7Escolas.txt","pontosA-5Vans-10Escolas.txt","pontosA-7Vans-10Escolas.txt","pontosA-10Vans-10Escolas.txt","pontosC-5Vans-5Escolas.txt","pontosC-7Vans-5Escolas.txt","pontosC-10Vans-5Escolas.txt","pontosC-5Vans-7Escolas.txt","pontosC-7Vans-7Escolas.txt","pontosC-10Vans-7Escolas.txt","pontosC-5Vans-10Escolas.txt","pontosC-7Vans-10Escolas.txt","pontosC-10Vans-10Escolas.txt" };
 		string nomeArquivo;
-		switch (selecionaArquivo)
-		{
-		case 1:
-			nomeArquivo = "Pontos-3e-3v.txt";//construtor arquivo
-			//nfEscolas = 3; nfVans = 3;
-			break;
-		case 2:
-			nomeArquivo = "Pontos-3e-5v.txt";//construtor arquivo
-			//nfEscolas = 3; nfVans = 5;
-			break;
-		case 3:
-			nomeArquivo = "Pontos-5e-3v.txt";//construtor arquivo
-			//nfEscolas = 5; nfVans = 3;
-			break;
-		case 4:
-			nomeArquivo = "Pontos-5e-5v.txt";//construtor arquivo
-			//nfEscolas = 5; nfVans = 5;
-			break;
-		default: cout << "Numero de Arquivo invalido" << endl; // code to be executed if n doesn't match any cases
-		}
+		nomeArquivo = names[selecionaArquivo];
+
 		ifstream file(nomeArquivo);
+
 		while (!file.eof())
 		{
 			double a;
@@ -85,7 +75,6 @@ public:
 				row.clear();
 			}
 			fflush(stdin);
-
 		}
 		file.close();
 	}
@@ -102,24 +91,8 @@ public:
 		double longitude2 = 0;
 		double dist = 0;				//Variável Para receber o cálculo da distância entre pontos
 
-		switch (selecionaArquivo)
-		{
-		case 1:
-			nomeArquivo = "MatrizAdjacencias-3e-3v.txt";//construtor arquivo
-			break;
-		case 2:
-			nomeArquivo = "MatrizAdjacencias-3e-5v.txt";//construtor arquivo
-			break;
-		case 3:
-			nomeArquivo = "MatrizAdjacencias-5e-3v.txt";//construtor arquivo
-			break;
-		case 4:
-			nomeArquivo = "MatrizAdjacencias-5e-5v.txt";//construtor arquivo
-			break;
-		default: cout << "Numero de Arquivo invalido" << endl; // code to be executed if n doesn't match any cases
-		}
-
-
+		string names[18] = { "MA-pontosA-5Vans-5Escolas.txt","MA-pontosA-7Vans-5Escolas.txt","MA-pontosA-10Vans-5Escolas.txt","MA-pontosA-5Vans-7Escolas.txt","MA-pontosA-7Vans-7Escolas.txt","MA-pontosA-10Vans-7Escolas.txt","MA-pontosA-5Vans-10Escolas.txt","MA-pontosA-7Vans-10Escolas.txt","MA-pontosA-10Vans-10Escolas.txt","MA-pontosC-5Vans-5Escolas.txt","MA-pontosC-7Vans-5Escolas.txt","MA-pontosC-10Vans-5Escolas.txt","MA-pontosC-5Vans-7Escolas.txt","MA-pontosC-7Vans-7Escolas.txt","MA-pontosC-10Vans-7Escolas.txt","MA-pontosC-5Vans-10Escolas.txt","MA-pontosC-7Vans-10Escolas.txt","MA-pontosC-10Vans-10Escolas.txt" };
+		nomeArquivo = names[selecionaArquivo];
 		ofstream out(nomeArquivo);					//construtor arquivo
 		vector<double> rowAdj;									//Declarando Vector rowAdj(Linha de dados dentro do vector matAdj)
 
@@ -237,39 +210,46 @@ public:
 		{
 			VetorEscolas.push_back(mat[a][4]);
 		}
+		//cout << "\n"<<VetorEscolas.size()<<" "<<numAlunos <<"\n";
+		/*for (int h = 0; h < VetorEscolas.size(); ++h)
+		{
 
+
+				cout << VetorEscolas[h];
+				cout << " ";
+
+
+		}*/
 		return VetorEscolas;
 	}
 
 	//FUNCOES .txt DOS GRAFICOS
-
-	void criaGraficoGeracaoFit(vector<double> GeracaoFit, vector<RetornaCaminho> caminho, int numGeracoes, int individuos, int cruzamento, int mutacao, int qtdEscolas, int qtdVans, int contaExecucaoGF) {
+	void criaGraficoGeracaoFit(vector<double> GeracaoFit, vector<RetornaCaminho> caminho, int numGeracoes, int individuos, int cruzamento, int mutacao, int qtdEscolas, int qtdVans, int contaExecucaoGF, int PAC, int peso) {
 		if (contaExecucaoGF < 10)
 		{
-			arquivoGF = "fitGeral";
-			arquivoGF = arquivoGF + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec0" + to_string(contaExecucaoGF) + tipoArquivo;
+			if (PAC == 1)
+			{
+				arquivoGF = "fitGeralA";
+			}
+			else
+			{
+				arquivoGF = "fitGeralC";
+			}
+			arquivoGF = 'p' + to_string(peso) + " -" + arquivoGF + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec0" + to_string(contaExecucaoGF) + tipoArquivo;
 		}
 		else
 		{
-			arquivoGF = arquivoGF + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec" + to_string(contaExecucaoGF) + tipoArquivo;
-		}
-		for (int geracoes = 0; geracoes < caminho.size(); geracoes++)
-		{
-			for (int van = 0; van < caminho[geracoes].caminho.size(); van++)
+			if (PAC == 1)
 			{
-				for (int posicaoDoCaminho = 0; posicaoDoCaminho < caminho[geracoes].caminho[van].size(); posicaoDoCaminho++)
-				{
-					if (caminho[geracoes].caminho[van][posicaoDoCaminho] <numAlunos)
-					{
-						//é aluno
-					}
-					else
-					{
-						//É escola
-					}
-				}
+				arquivoGF = "fitGeralA";
 			}
+			else
+			{
+				arquivoGF = "fitGeralC";
+			}
+			arquivoGF = 'p' + to_string(peso) + " -" + arquivoGF + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec" + to_string(contaExecucaoGF) + tipoArquivo;
 		}
+
 		//GeracoesXFit100-
 		ofstream out(arquivoGF);					//construtor arquivo
 
@@ -277,8 +257,126 @@ public:
 		{
 			out << GeracaoFit[i] << " ";			//Separando dados no txt
 		}
+		out << endl;
 
-		arquivoGF = "fitGeral";
+
+		out.close();
+	}
+
+
+	void criaGraficoGeracaoFit(vector<double> GeracaoFit, vector<RetornaCaminho> caminho, int numGeracoes, int individuos, int cruzamento, int mutacao, int qtdEscolas, int qtdVans, int contaExecucaoGF, int PAC, int peso, vector<vector<double>> distVans) {
+		if (contaExecucaoGF < 10)
+		{
+			if (PAC == 1)
+			{
+				arquivoGF = "fitGeralA";
+			}
+			else
+			{
+				arquivoGF = "fitGeralC";
+			}
+			arquivoGF = 'p' + to_string(peso) + " -" + arquivoGF + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec0" + to_string(contaExecucaoGF) + tipoArquivo;
+		}
+		else
+		{
+			if (PAC == 1)
+			{
+				arquivoGF = "fitGeralA";
+			}
+			else
+			{
+				arquivoGF = "fitGeralC";
+			}
+			arquivoGF = 'p' + to_string(peso) + " -" + arquivoGF + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec" + to_string(contaExecucaoGF) + tipoArquivo;
+		}
+
+		//GeracoesXFit100-
+		ofstream out(arquivoGF);					//construtor arquivo
+
+		for (int i = 0; i < GeracaoFit.size(); i++)
+		{
+			out << GeracaoFit[i] << " ";			//Separando dados no txt
+		}
+		out << endl;
+
+		for (int i = 0; i < distVans.size(); i++)
+		{
+			for (int j = 0; j < distVans[i].size(); j++)
+			{
+				out << distVans[i][j] << " ";
+			}
+			out << endl;
+		}
+		out.close();
+	}
+
+	void caminho(vector<RetornaCaminho> caminho, int numGeracoes, int individuos, int cruzamento, int mutacao, int qtdEscolas, int qtdVans, int contaExecucaoGF, int PAC, int peso)
+	{
+		if (contaExecucaoGF < 10)
+		{
+			if (PAC == 1)
+			{
+				arquivoCaminho = "fCaminhoA";
+			}
+			else
+			{
+				arquivoCaminho = "fCaminhoC";
+			}
+			arquivoCaminho = 'p' + to_string(peso) + " -" + arquivoCaminho + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec0" + to_string(contaExecucaoGF) + tipoArquivo;
+		}
+
+		else
+		{
+			if (PAC == 1)
+			{
+				arquivoCaminho = "fCaminhoA";
+			}
+			else
+			{
+				arquivoCaminho = "fCaminhoC";
+			}
+			arquivoCaminho = 'p' + to_string(peso) + " -" + arquivoCaminho + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + "Exec" + to_string(contaExecucaoGF) + tipoArquivo;
+		}
+
+		ofstream out(arquivoCaminho);
+		for (int geracoes = 0; geracoes < caminho.size(); geracoes++)
+		{
+			for (int van = 0; van < caminho[geracoes].caminho.size(); van++)
+			{
+				for (int posicaoDoCaminho = 0; posicaoDoCaminho < caminho[geracoes].caminho[van].size(); posicaoDoCaminho++)
+				{
+					//cout << caminho[geracoes].caminho[van][posicaoDoCaminho];
+					//                              Latitude                                                 Longitude
+					out << mat[caminho[geracoes].caminho[van][posicaoDoCaminho]][0] << " " << mat[caminho[geracoes].caminho[van][posicaoDoCaminho]][1] << " ";
+				}
+				if (van < caminho[geracoes].caminho.size() - 1)
+				{
+					out << ",";
+				}
+			}
+			out << endl;
+		}
+		//arquivoCaminho = "fCaminho";
+		out.close();
+	}
+	void criaArquivoDP(vector<double>DpVans, int numGeracoes, int individuos, int cruzamento, int mutacao, int qtdEscolas, int qtdVans, int PAC, int peso)
+	{
+		if (PAC == 1)
+		{
+			arquivoDP = "dpA";
+		}
+		else
+		{
+			arquivoDP = "dpC";
+		}
+		arquivoDP = arquivoDP + '-' + to_string(numGeracoes) + "ger-" + to_string(individuos) + "ind-" + to_string(cruzamento) + "cru-" + to_string(mutacao) + "mut" + '(' + to_string(qtdEscolas) + "e-" + to_string(qtdVans) + 'v' + ')' + 'p' + to_string(peso) + tipoArquivo;
+		ofstream out(arquivoDP);
+		for (int i = 0; i < DpVans.size() - 1; i++)
+		{
+			out << DpVans[i] << " ";
+		}
+		out << DpVans[DpVans.size() - 1];
+		out.close();
 	}
 
 };
